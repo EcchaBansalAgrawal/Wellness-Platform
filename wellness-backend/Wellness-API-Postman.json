@@ -1,0 +1,290 @@
+{
+  "info": {
+    "_postman_id": "wellness-api-collection",
+    "name": "Wellness API Collection",
+    "description": "Complete API collection for Wellness Backend",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Auth Endpoints",
+      "item": [
+        {
+          "name": "Register User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john@example.com\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/api/auth/register",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "auth", "register"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"john@example.com\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/api/auth/login",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "auth", "login"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Assessment Endpoints",
+      "item": [
+        {
+          "name": "Add Assessment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{TOKEN}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": \"{{USER_ID}}\",\n  \"mood\": \"Happy\",\n  \"stressLevel\": 5,\n  \"sleepHours\": 8,\n  \"notes\": \"Feeling great today!\"\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/api/assessment/add",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "assessment", "add"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Assessments",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}/api/assessment/all",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "assessment", "all"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get User Assessments",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}/api/assessment/user/{{USER_ID}}",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "assessment", "user", "{{USER_ID}}"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Booking Endpoints",
+      "item": [
+        {
+          "name": "Create Booking",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{TOKEN}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": \"{{USER_ID}}\",\n  \"sessionType\": \"Meditation\",\n  \"date\": \"2026-04-25\",\n  \"notes\": \"Morning session preferred\"\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/api/booking/create",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "booking", "create"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get User Bookings",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/booking/all",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "booking", "all"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Booking",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{TOKEN}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"Confirmed\",\n  \"notes\": \"Updated notes\"\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/api/booking/update/{{BOOKING_ID}}",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "booking", "update", "{{BOOKING_ID}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Booking",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/booking/delete/{{BOOKING_ID}}",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "booking", "delete", "{{BOOKING_ID}}"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Dashboard Endpoints",
+      "item": [
+        {
+          "name": "Get Dashboard Data",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/dashboard",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "dashboard"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Report Endpoints",
+      "item": [
+        {
+          "name": "Generate Report (PDF)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/report",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "report"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Test API",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{BASE_URL}}/",
+          "host": ["{{BASE_URL}}"],
+          "path": [""]
+        }
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "BASE_URL",
+      "value": "http://localhost:5000",
+      "type": "string"
+    },
+    {
+      "key": "TOKEN",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "USER_ID",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "BOOKING_ID",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}
