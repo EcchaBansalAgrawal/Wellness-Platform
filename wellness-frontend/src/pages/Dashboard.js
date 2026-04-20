@@ -1,6 +1,7 @@
 import React from "react";
 import ChartComponent from "../components/ChartComponent";
 import Sidebar from "../components/Sidebar";
+import RecommendationComponent from "../components/RecommendationComponent";
 
 
 function Dashboard() {
@@ -32,6 +33,10 @@ function Dashboard() {
           <div style={styles.chart}>
             <h2>Weekly Stress Trends</h2>
             <ChartComponent />
+          </div>
+
+          <div style={{ marginTop: "30px" }}>
+            <RecommendationComponent />
           </div>
         </div>
       </div>

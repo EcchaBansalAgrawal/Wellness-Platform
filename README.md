@@ -24,14 +24,16 @@ A full-stack wellness management application built with **Node.js + Express + Mo
 
 - **User Authentication** - Secure registration and login with JWT tokens
 - **Assessment Tracking** - Log mood, stress levels, and sleep data
-- **Booking Management** - Schedule and manage wellness sessions
+- **📅 Calendar Integration** - Google Calendar-style booking management with Month/Week/Day/Agenda views
+- **Booking Management** - Schedule, reschedule, and manage wellness sessions
 - **Dashboard Analytics** - View wellness trends and statistics
 - **PDF Reports** - Generate wellness reports
 - **Responsive UI** - React-based modern frontend
-- **RESTful API** - Complete API with authentication
+- **🆕 Personalized Recommendations** - AI-powered wellness suggestions based on assessments
 - **🆕 Role-Based Access** - User and Admin roles for secure access control
 - **🆕 Admin Dashboard** - Powerful admin panel for system management
 - **🆕 Booking Approval System** - Admins can approve/reject bookings
+- **🆕 Booking Rescheduling** - Users can reschedule existing bookings
 - **🆕 System Analytics** - Comprehensive statistics and insights
 
 ---
@@ -79,8 +81,6 @@ mongod --version    # Should show version
 
 ## 📁 Project Structure
 
-```
-Wellness/
 ├── wellness-backend/          # Backend server (Node.js + Express)
 │   ├── config/
 │   │   └── db.js             # MongoDB connection
@@ -89,6 +89,7 @@ Wellness/
 │   │   ├── assessmentController.js # Assessment logic
 │   │   ├── bookingController.js    # Booking logic
 │   │   ├── dashboardController.js  # Dashboard logic
+│   │   ├── recommendationController.js # 🆕 Recommendation logic
 │   │   └── reportController.js     # Report generation
 │   ├── models/
 │   │   ├── User.js           # User schema
@@ -99,15 +100,19 @@ Wellness/
 │   │   ├── assessmentRoutes.js
 │   │   ├── bookingRoutes.js
 │   │   ├── dashboardRoutes.js
+│   │   ├── recommendationRoutes.js # 🆕 Recommendation routes
 │   │   └── reportRoutes.js
 │   ├── middleware/
+│   │   ├── adminMiddleware.js # Admin role verification
 │   │   └── authMiddleware.js # JWT verification
 │   ├── .env                  # Environment variables
 │   ├── .gitignore
 │   ├── package.json
 │   ├── server.js             # Main server file
 │   ├── Wellness-API-Postman.json  # Postman collection
-│   └── POSTMAN_SETUP.md      # Postman guide
+│   ├── POSTMAN_SETUP.md      # Postman guide
+│   ├── CALENDAR_SETUP.md     # 🆕 Calendar integration guide
+│   └── ADMIN_SETUP.md        # Admin setup guide
 │
 ├── wellness-frontend/         # Frontend (React)
 │   ├── public/               # Static files
@@ -115,7 +120,10 @@ Wellness/
 │   │   ├── components/
 │   │   │   ├── Navbar.js
 │   │   │   ├── Sidebar.js
-│   │   │   └── ChartComponent.js
+│   │   │   ├── ChartComponent.js
+│   │   │   ├── CalendarComponent.js    # 🆕 Calendar integration
+│   │   │   ├── RecommendationComponent.js # 🆕 AI recommendations
+│   │   │   └── RescheduleModal.js      # 🆕 Booking rescheduling
 │   │   ├── pages/
 │   │   │   ├── Login.js
 │   │   │   ├── Register.js
@@ -124,15 +132,16 @@ Wellness/
 │   │   │   └── Booking.js
 │   │   ├── services/
 │   │   │   └── api.js        # API client
+│   │   ├── styles/
+│   │   │   ├── CalendarComponent.css   # 🆕 Calendar styling
+│   │   │   ├── RecommendationComponent.css # 🆕 Recommendation styling
+│   │   │   └── RescheduleModal.css     # 🆕 Modal styling
 │   │   ├── App.js
 │   │   ├── index.js
 │   │   └── index.css
 │   ├── .gitignore
 │   ├── package.json
 │   └── README.md
-│
-└── README.md                 # This file
-```
 
 ---
 
@@ -398,6 +407,25 @@ Response: 200 OK
 }
 ```
 
+#### 🆕 Reschedule Booking
+```
+PUT /booking/reschedule/:id
+Authorization: Bearer {TOKEN}
+Content-Type: application/json
+
+Request Body:
+{
+  "date": "2026-04-26T14:30:00Z",
+  "notes": "Rescheduled to afternoon session"
+}
+
+Response: 200 OK
+{
+  "message": "Booking rescheduled successfully",
+  "booking": { updated booking object }
+}
+```
+
 #### Delete Booking
 ```
 DELETE /booking/delete/:id
@@ -434,6 +462,35 @@ Authorization: Bearer {TOKEN}
 
 Response: 200 OK
 (Downloads PDF file with wellness report)
+```
+
+### 🆕 Recommendation Endpoint
+
+#### Get Personalized Recommendations
+```
+GET /recommendation
+Authorization: Bearer {TOKEN}
+
+Response: 200 OK
+{
+  "lastAssessment": {
+    "mood": "Happy",
+    "stressLevel": 5,
+    "sleepHours": 8,
+    "date": "2026-04-20T10:00:00Z"
+  },
+  "recommendations": [
+    {
+      "id": 1,
+      "title": "💪 Excellent Balance Achieved!",
+      "description": "Your sleep and stress levels are optimal. You're doing great!",
+      "icon": "🎯",
+      "category": "Positive Reinforcement",
+      "action": "Share Progress",
+      "priority": "low"
+    }
+  ]
+}
 ```
 
 ### 🆕 Admin Endpoints
@@ -533,9 +590,11 @@ In Postman collection, set variables:
 1. **Register User** → POST `/api/auth/register`
 2. **Login User** → POST `/api/auth/login` (save token & user ID)
 3. **Add Assessment** → POST `/api/assessment/add`
-4. **Create Booking** → POST `/api/booking/create`
-5. **Get Dashboard** → GET `/api/dashboard`
-6. **Generate Report** → GET `/api/report`
+4. **Get Recommendations** → GET `/api/recommendation` 🆕
+5. **Create Booking** → POST `/api/booking/create`
+6. **Reschedule Booking** → PUT `/api/booking/reschedule/{BOOKING_ID}` 🆕
+7. **Get Dashboard** → GET `/api/dashboard`
+8. **Generate Report** → GET `/api/report`
 
 ---
 
@@ -571,6 +630,62 @@ See **[ADMIN_SETUP.md](wellness-backend/ADMIN_SETUP.md)** for:
 - Complete admin API documentation
 - Admin workflow examples
 - Postman admin collections
+
+---
+
+## 📅 Calendar Integration Guide
+
+### Quick Start
+
+1. **Navigate to Booking Page** - Access the calendar from the sidebar
+2. **View Multiple Formats** - Switch between Month, Week, Day, and Agenda views
+3. **Create Bookings** - Click on any date to schedule a new session
+4. **Reschedule Sessions** - Click existing bookings to modify dates
+5. **Track Status** - Color-coded events show approval status
+
+### Calendar Features
+
+✅ **Google Calendar-style Interface** - Professional booking management  
+✅ **Multiple View Modes** - Month, Week, Day, and Agenda views  
+✅ **Color-coded Status** - Visual approval status indicators  
+✅ **Quick Booking Creation** - Click-to-create functionality  
+✅ **Rescheduling** - Easy date/time modifications  
+✅ **Responsive Design** - Works on all devices  
+
+### Full Calendar Guide
+
+See **[CALENDAR_SETUP.md](wellness-backend/CALENDAR_SETUP.md)** for:
+- Complete calendar integration documentation
+- API endpoints for booking management
+- Frontend component details
+- Troubleshooting guide
+
+---
+
+## 🤖 Personalized Recommendations
+
+### How It Works
+
+The AI-powered recommendation system analyzes your latest wellness assessment and provides personalized suggestions:
+
+- **Stress Management** - Meditation and yoga recommendations for high stress
+- **Sleep Health** - Tips for better sleep when hours are low
+- **Mental Health** - Counseling suggestions for negative moods
+- **Fitness** - Exercise recommendations for overall wellness
+- **Positive Reinforcement** - Encouragement when metrics are optimal
+
+### Getting Recommendations
+
+1. **Complete Assessment** - Fill out mood, stress, and sleep data
+2. **View Dashboard** - Recommendations appear automatically
+3. **Take Action** - Click recommendation buttons to book sessions
+4. **Track Progress** - See how your wellness improves over time
+
+### Recommendation Categories
+
+🎯 **High Priority** - Immediate attention needed (red indicators)  
+⚠️ **Medium Priority** - Beneficial improvements (yellow indicators)  
+✅ **Low Priority** - Maintenance and positive reinforcement (green indicators)
 
 ---
 
@@ -694,6 +809,8 @@ JWT_SECRET=your_secret_key_here
 | react-router-dom | ^7.14.1 | Navigation |
 | axios | ^1.15.1 | HTTP client |
 | recharts | ^3.8.1 | Charts/graphs |
+| react-big-calendar | ^1.19.4 | 🆕 Calendar component |
+| date-fns | ^4.1.0 | 🆕 Date utilities |
 | react-scripts | 5.0.1 | Build tools |
 
 ---
@@ -721,6 +838,14 @@ For issues and questions:
 2. Review API documentation in `wellness-backend/POSTMAN_SETUP.md`
 3. Check backend logs for error messages
 4. Verify all services are running (MongoDB, Backend, Frontend)
+
+---
+
+## 📚 Related Documentation
+
+- [Admin Setup](wellness-backend/ADMIN_SETUP.md) - Admin features and setup
+- [Calendar Setup](wellness-backend/CALENDAR_SETUP.md) - Calendar integration guide
+- [Postman Setup](wellness-backend/POSTMAN_SETUP.md) - API testing guide
 
 ---
 
@@ -756,6 +881,26 @@ MongoDB automatically creates these collections:
 - `users` - User accounts and profiles
 - `assessments` - Wellness assessment records
 - `bookings` - Session bookings and reservations
+
+---
+
+## ✅ Feature Checklist
+
+### Core Features
+- ✅ User authentication with JWT
+- ✅ Wellness assessment tracking
+- ✅ Booking management system
+- ✅ Dashboard with analytics
+- ✅ PDF report generation
+- ✅ Responsive React frontend
+
+### 🆕 New Features
+- ✅ Calendar integration with multiple views
+- ✅ Booking rescheduling functionality
+- ✅ Personalized AI recommendations
+- ✅ Role-based access control
+- ✅ Admin dashboard and analytics
+- ✅ Booking approval system
 
 ---
 

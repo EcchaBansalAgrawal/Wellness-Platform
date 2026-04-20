@@ -64,3 +64,51 @@ exports.deleteBooking = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+// ✅ RESCHEDULE BOOKING
+exports.rescheduleBooking = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { date, notes } = req.body;
+
+    if (!date) {
+      return res.status(400).json({ message: "New date is required" });
+    }
+
+    // Validate date is in the future
+    const newDate = new Date(date);
+    const now = new Date();
+    
+    if (newDate <= now) {
+      return res.status(400).json({ message: "Booking date must be in the future" });
+    }
+
+    // Find booking
+    const booking = await Booking.findById(id);
+    if (!booking) {
+      return res.status(404).json({ message: "Booking not found" });
+    }
+
+    // Check if user owns this booking or is admin
+    if (booking.userId.toString() !== req.user?.id && req.user?.role !== "Admin") {
+      return res.status(403).json({ message: "Unauthorized to reschedule this booking" });
+    }
+
+    // Update booking
+    booking.date = newDate;
+    if (notes) {
+      booking.notes = notes;
+    }
+    // Reset approval status when rescheduled
+    booking.approvalStatus = "Pending";
+
+    await booking.save();
+
+    res.json({
+      message: "Booking rescheduled successfully",
+      booking: booking,
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};

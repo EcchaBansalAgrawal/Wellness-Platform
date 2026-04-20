@@ -1,0 +1,181 @@
+.calendar-container {
+  background: white;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin: 20px 0;
+}
+
+.rbc-calendar {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+}
+
+.rbc-header {
+  padding: 15px 5px;
+  font-weight: 600;
+  color: #333;
+  background: #f8f9fa;
+  border-bottom: 2px solid #e9ecef;
+}
+
+.rbc-today {
+  background-color: #e7f3ff;
+}
+
+.rbc-off-range {
+  background-color: #fafbfc;
+}
+
+.rbc-event {
+  padding: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.rbc-event:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transform: translateY(-2px);
+}
+
+.rbc-event-content {
+  font-size: 12px;
+  padding: 5px;
+  white-space: normal;
+}
+
+.rbc-month-view {
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.rbc-month-row {
+  min-height: 120px;
+}
+
+.rbc-date-cell {
+  padding: 10px 5px;
+  text-align: right;
+}
+
+.rbc-toolbar {
+  padding: 20px 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.rbc-toolbar button {
+  color: #0066cc;
+  border: 1px solid #0066cc;
+  background: white;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 500;
+}
+
+.rbc-toolbar button:hover {
+  background: #0066cc;
+  color: white;
+}
+
+.rbc-toolbar button.rbc-active {
+  background: #0066cc;
+  color: white;
+}
+
+.rbc-toolbar-label {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+  flex-grow: 1;
+  text-align: center;
+}
+
+.rbc-agenda-view {
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+}
+
+.rbc-agenda-table {
+  width: 100%;
+}
+
+.rbc-agenda-date-cell,
+.rbc-agenda-time-cell {
+  padding: 12px;
+  vertical-align: top;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.rbc-agenda-event-cell {
+  padding: 12px;
+  border-bottom: 1px solid #e9ecef;
+}
+
+/* Status indicators */
+.event-pending {
+  background-color: #ffc107 !important;
+}
+
+.event-approved {
+  background-color: #28a745 !important;
+}
+
+.event-rejected {
+  background-color: #dc3545 !important;
+}
+
+.event-completed {
+  background-color: #6c757d !important;
+}
+
+.calendar-empty {
+  text-align: center;
+  padding: 60px 20px;
+  color: #999;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.calendar-empty p {
+  margin: 0;
+  font-size: 16px;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .calendar-container {
+    padding: 10px;
+    margin: 10px 0;
+  }
+
+  .rbc-toolbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .rbc-toolbar-label {
+    text-align: left;
+    margin: 10px 0;
+  }
+
+  .rbc-month-row {
+    min-height: 80px;
+  }
+
+  .rbc-header {
+    padding: 10px 2px;
+    font-size: 12px;
+  }
+
+  .rbc-event-content {
+    font-size: 10px;
+  }
+}
