@@ -29,6 +29,10 @@ A full-stack wellness management application built with **Node.js + Express + Mo
 - **PDF Reports** - Generate wellness reports
 - **Responsive UI** - React-based modern frontend
 - **RESTful API** - Complete API with authentication
+- **🆕 Role-Based Access** - User and Admin roles for secure access control
+- **🆕 Admin Dashboard** - Powerful admin panel for system management
+- **🆕 Booking Approval System** - Admins can approve/reject bookings
+- **🆕 System Analytics** - Comprehensive statistics and insights
 
 ---
 
@@ -432,6 +436,80 @@ Response: 200 OK
 (Downloads PDF file with wellness report)
 ```
 
+### 🆕 Admin Endpoints
+
+**Requires Admin Role - See [ADMIN_SETUP.md](wellness-backend/ADMIN_SETUP.md) for detailed instructions**
+
+#### Get All Users
+```
+GET /admin/users
+Authorization: Bearer {ADMIN_TOKEN}
+
+Response: 200 OK
+{
+  "total": 15,
+  "users": [ { user objects } ]
+}
+```
+
+#### Get All Bookings
+```
+GET /admin/bookings
+Authorization: Bearer {ADMIN_TOKEN}
+
+Response: 200 OK
+{
+  "total": 25,
+  "bookings": [ { booking objects with approval status } ]
+}
+```
+
+#### Approve Booking
+```
+PUT /admin/bookings/:bookingId/approve
+Authorization: Bearer {ADMIN_TOKEN}
+
+Response: 200 OK
+{
+  "message": "Booking approved successfully",
+  "booking": { updated booking object }
+}
+```
+
+#### Reject Booking
+```
+PUT /admin/bookings/:bookingId/reject
+Authorization: Bearer {ADMIN_TOKEN}
+Content-Type: application/json
+
+Request Body:
+{
+  "reason": "Trainer not available"
+}
+
+Response: 200 OK
+{
+  "message": "Booking rejected successfully",
+  "booking": { updated booking object }
+}
+```
+
+#### Get System Analytics
+```
+GET /admin/analytics
+Authorization: Bearer {ADMIN_TOKEN}
+
+Response: 200 OK
+{
+  "statistics": {
+    "users": { total, admins, regular },
+    "bookings": { total, pending, approved, rejected },
+    "assessments": { total, averageStress, moodDistribution }
+  },
+  "recentActivity": { recentUsers, recentBookings }
+}
+```
+
 ---
 
 ## 🧪 Testing with Postman
@@ -461,7 +539,42 @@ In Postman collection, set variables:
 
 ---
 
-## 🔧 Troubleshooting
+## �‍💼 Admin Dashboard Setup
+
+### Quick Start
+
+1. **Create Admin User** - Update any user's role to "Admin" in MongoDB:
+   ```json
+   db.users.updateOne(
+     { email: "your@email.com" },
+     { $set: { role: "Admin" } }
+   )
+   ```
+
+2. **Login as Admin** - Login with admin credentials to get admin token
+
+3. **Access Admin Features** - Use admin token to access `/api/admin/*` endpoints
+
+### Admin Capabilities
+
+✅ View all users in the system  
+✅ View user details and history  
+✅ View all bookings  
+✅ Approve or reject pending bookings  
+✅ View system-wide analytics and statistics  
+✅ Promote users to admin role  
+
+### Full Admin Guide
+
+See **[ADMIN_SETUP.md](wellness-backend/ADMIN_SETUP.md)** for:
+- Detailed admin setup instructions
+- Complete admin API documentation
+- Admin workflow examples
+- Postman admin collections
+
+---
+
+## �🔧 Troubleshooting
 
 ### Issue: Port 3000/3001 Already in Use
 

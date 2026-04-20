@@ -18,6 +18,7 @@ const assessmentRoutes = require("./routes/assessmentRoutes");
 const bookingRoutes = require("./routes/bookingRoutes");
 const dashboardRoutes = require("./routes/dashboardRoutes");
 const reportRoutes = require("./routes/reportRoutes");
+const adminRoutes = require("./routes/adminRoutes");
 
 // ✅ USE ROUTES (VERY IMPORTANT)
 app.use("/api/auth", authRoutes);
@@ -25,6 +26,7 @@ app.use("/api/assessment", assessmentRoutes);
 app.use("/api/booking", bookingRoutes);
 app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/report", reportRoutes);
+app.use("/api/admin", adminRoutes);
 
 // ✅ test route
 app.get("/", (req, res) => {
