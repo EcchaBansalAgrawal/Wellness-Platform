@@ -1,15 +1,32 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import API from "../services/api";
 import "../styles/RecommendationComponent.css";
 
 function RecommendationComponent() {
+  const navigate = useNavigate();
   const [recommendations, setRecommendations] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchRecommendations();
   }, []);
+
+  const handleAction = (action) => {
+    if (action.includes("Book")) {
+      const sessionType = action.replace("Book ", "").toLowerCase();
+      navigate("/booking", { state: { sessionType } });
+    } else if (action === "Sleep Tips") {
+      alert("Sleep tips: Maintain consistent bedtime, avoid screens before bed, create a relaxing environment.");
+    } else if (action === "View Progress") {
+      navigate("/dashboard");
+    } else {
+      alert(`Action: ${action}`);
+    }
+  };
 
   const fetchRecommendations = async () => {
     try {
@@ -22,6 +39,22 @@ function RecommendationComponent() {
       setRecommendations([]);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleAction = (action) => {
+    if (action.includes("Book")) {
+      // Extract session type from action
+      const sessionType = action.replace("Book ", "").toLowerCase();
+      navigate("/booking", { state: { sessionType } });
+    } else if (action === "Sleep Tips") {
+      // Could navigate to a tips page or show modal
+      alert("Sleep tips: Maintain consistent bedtime, avoid screens before bed, create a relaxing environment.");
+    } else if (action === "View Progress") {
+      navigate("/dashboard");
+    } else {
+      // Default action
+      alert(`Action: ${action}`);
     }
   };
 

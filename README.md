@@ -1,4 +1,4 @@
-# Wellness Application 🧘‍♀️
+﻿# Wellness Application 🧘‍♀️
 
 A full-stack wellness management application built with **Node.js + Express + MongoDB** backend and **React** frontend. Track your wellness metrics, manage bookings, and generate wellness reports.
 
@@ -7,6 +7,8 @@ A full-stack wellness management application built with **Node.js + Express + Mo
 ## 📋 Table of Contents
 
 - [Features](#features)
+- [System Architecture](#system-architecture)
+- [Core System Flow](#core-system-flow)
 - [Tech Stack](#tech-stack)
 - [Prerequisites](#prerequisites)
 - [Project Structure](#project-structure)
@@ -35,6 +37,73 @@ A full-stack wellness management application built with **Node.js + Express + Mo
 - **🆕 Booking Approval System** - Admins can approve/reject bookings
 - **🆕 Booking Rescheduling** - Users can reschedule existing bookings
 - **🆕 System Analytics** - Comprehensive statistics and insights
+- **🆕 Intelligent Insights** - Automated data analysis and trend detection
+- **🆕 Feedback System** - User feedback collection for continuous improvement
+- **🆕 Actionable Recommendations** - Direct integration between insights and booking actions
+
+---
+
+## 🏗️ System Architecture
+
+The Wellness Application implements a sophisticated **closed-loop system** that continuously improves user wellness through intelligent data processing and personalized recommendations.
+
+### Core Components
+
+- **Input Layer**: Assessment collection (mood, stress, sleep)
+- **Processing Layer**: Data analysis and trend calculation
+- **Insight Layer**: Automated understanding of wellness patterns
+- **Recommendation Layer**: Personalized action suggestions
+- **Action Layer**: Direct booking integration
+- **Feedback Layer**: User response measurement
+- **Improvement Loop**: Continuous system learning
+
+---
+
+## 🔄 Core System Flow
+
+The application follows a continuous improvement cycle:
+
+`
+User Input → Data Processing → Insights → Recommendations → Action → Feedback → Improvement
+`
+
+### Detailed Flow
+
+1. **🧾 INPUT LAYER (Assessment Collection)**
+   - User logs wellness data (mood, stress, sleep hours, notes)
+   - Data stored with automatic timestamps
+   - Validation ensures data quality
+
+2. **⚙️ PROCESSING LAYER (Data Analysis)**
+   - Calculates averages, trends, and patterns
+   - Compares recent vs. historical data
+   - Identifies correlations between wellness metrics
+
+3. **🧠 INSIGHT LAYER (Understanding)**
+   - Generates automated insights:
+     - 'Stress levels have been increasing recently'
+     - 'Sleep quality is below optimal levels'
+     - 'Mood patterns show positive trends'
+
+4. **🧠 RECOMMENDATION LAYER (Decision Making)**
+   - Creates personalized recommendations based on insights
+   - Considers user history and trends
+   - Prioritizes high-impact suggestions
+
+5. **📅 ACTION LAYER (User Engagement)**
+   - Direct integration with booking system
+   - One-click actions from recommendations
+   - Seamless user experience flow
+
+6. **🔁 FEEDBACK LAYER (Measurement)**
+   - Collects user ratings on recommendations
+   - Tracks action completion
+   - Measures effectiveness of suggestions
+
+7. **📈 IMPROVEMENT LOOP (Learning)**
+   - Uses feedback to refine algorithms
+   - Adapts recommendations based on success rates
+   - Continuous system optimization
 
 ---
 
@@ -71,11 +140,11 @@ Before you begin, ensure you have the following installed:
 
 ### Verify Installation
 
-```bash
+`ash
 node --version      # Should be v14+
 npm --version       # Should be v6+
 mongod --version    # Should show version
-```
+`
 
 ---
 
@@ -90,17 +159,20 @@ mongod --version    # Should show version
 │   │   ├── bookingController.js    # Booking logic
 │   │   ├── dashboardController.js  # Dashboard logic
 │   │   ├── recommendationController.js # 🆕 Recommendation logic
+│   │   ├── feedbackController.js   # 🆕 Feedback system
 │   │   └── reportController.js     # Report generation
 │   ├── models/
 │   │   ├── User.js           # User schema
 │   │   ├── Assessment.js     # Assessment schema
-│   │   └── Booking.js        # Booking schema
+│   │   ├── Booking.js        # Booking schema
+│   │   └── Feedback.js       # 🆕 Feedback schema
 │   ├── routes/
 │   │   ├── authRoutes.js
 │   │   ├── assessmentRoutes.js
 │   │   ├── bookingRoutes.js
 │   │   ├── dashboardRoutes.js
 │   │   ├── recommendationRoutes.js # 🆕 Recommendation routes
+│   │   ├── feedbackRoutes.js # 🆕 Feedback routes
 │   │   └── reportRoutes.js
 │   ├── middleware/
 │   │   ├── adminMiddleware.js # Admin role verification
@@ -149,759 +221,180 @@ mongod --version    # Should show version
 
 ### Step 1: Clone the Repository
 
-```bash
-git clone <repository-url>
-cd Wellness
-```
+`ash
+git clone https://github.com/your-username/wellness-app.git
+cd wellness-app
+`
 
 ### Step 2: Install Backend Dependencies
 
-```bash
+`ash
 cd wellness-backend
 npm install
-```
-
-Expected output should show:
-```
-added 165 packages in X seconds
-```
+`
 
 ### Step 3: Install Frontend Dependencies
 
-```bash
+`ash
 cd ../wellness-frontend
 npm install
-```
+`
 
-Expected output should show:
-```
-added 1XX packages in X seconds
-```
+### Step 4: Set Up Environment Variables
+
+Create a .env file in the wellness-backend directory:
+
+`env
+PORT=5000
+MONGODB_URI=mongodb://127.0.0.1:27017/wellness
+JWT_SECRET=your-super-secret-jwt-key-here
+`
+
+### Step 5: Start MongoDB
+
+Make sure MongoDB is running on your system:
+
+`ash
+# On Windows
+net start MongoDB
+
+# On macOS
+brew services start mongodb-community
+
+# On Linux
+sudo systemctl start mongod
+`
 
 ---
 
 ## ⚙️ Configuration
 
-### Step 1: Create Backend Environment File
+### Environment Variables
 
-Navigate to `wellness-backend` folder and create `.env` file:
+| Variable | Description | Default |
+|----------|-------------|---------|
+| PORT | Server port | 5000 |
+| MONGODB_URI | MongoDB connection string | mongodb://127.0.0.1:27017/wellness |
+| JWT_SECRET | JWT signing secret | Required |
 
-```bash
-cd wellness-backend
-```
+### Database Setup
 
-Create file `.env` with:
-
-```env
-# MongoDB Connection
-MONGODB_URI=mongodb://127.0.0.1:27017/wellness
-
-# Server Configuration
-PORT=5000
-
-# JWT Secret
-JWT_SECRET=your_super_secret_jwt_key_change_this_in_production
-```
-
-### Step 2: Start MongoDB
-
-**Option A: Local MongoDB**
-
-```bash
-mongod
-```
-
-Keep this running in a separate terminal.
-
-**Option B: MongoDB Atlas (Cloud)**
-
-1. Go to [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
-2. Create a free account
-3. Create a cluster
-4. Get connection string
-5. Update `.env`:
-
-```env
-MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/wellness
-```
+The application will automatically create collections when first run. No manual database setup required.
 
 ---
 
-## ▶️ Running the Application
+## 🏃 Running the Application
 
-### Terminal 1: Start Backend Server
+### Development Mode
 
-```bash
+1. **Start Backend:**
+   `ash
+   cd wellness-backend
+   npm run dev
+   `
+
+2. **Start Frontend:**
+   `ash
+   cd wellness-frontend
+   npm start
+   `
+
+3. **Access Application:**
+   - Frontend: http://localhost:3000
+   - Backend API: http://localhost:5000
+
+### Production Mode
+
+`ash
+# Backend
 cd wellness-backend
 npm start
-```
 
-Expected output:
-```
-[nodemon] starting `node server.js`
-Server running on port 5000
-MongoDB Connected
-```
-
-### Terminal 2: Start Frontend Server
-
-```bash
+# Frontend (build and serve)
 cd wellness-frontend
-npm start
-```
-
-Expected output:
-```
-Compiled successfully!
-
-You can now view wellness-frontend in the browser.
-
-  Local:            http://localhost:3001
-```
-
-### Step 3: Open in Browser
-
-- **Frontend**: http://localhost:3001
-- **Backend API**: http://localhost:5000
+npm run build
+npm install -g serve
+serve -s build -l 3000
+`
 
 ---
 
-## 📡 API Documentation
-
-### Base URL
-```
-http://localhost:5000/api
-```
+## 📚 API Documentation
 
 ### Authentication Endpoints
-
-#### Register User
-```
-POST /auth/register
-Content-Type: application/json
-
-Request Body:
-{
-  "name": "John Doe",
-  "email": "john@example.com",
-  "password": "password123"
-}
-
-Response: 201 Created
-{
-  "message": "User registered successfully"
-}
-```
-
-#### Login User
-```
-POST /auth/login
-Content-Type: application/json
-
-Request Body:
-{
-  "email": "john@example.com",
-  "password": "password123"
-}
-
-Response: 200 OK
-{
-  "message": "Login successful",
-  "token": "eyJhbGciOiJIUzI1NiIs...",
-  "user": {
-    "id": "507f1f77bcf86cd799439011",
-    "name": "John Doe",
-    "email": "john@example.com"
-  }
-}
-```
+- POST /api/auth/register - User registration
+- POST /api/auth/login - User login
 
 ### Assessment Endpoints
+- POST /api/assessment/add - Add new assessment
+- GET /api/assessment/user/:userId - Get user assessments
+- GET /api/assessment/insights/:userId - Get processed insights
 
-#### Add Assessment
-```
-POST /assessment/add
-Authorization: Bearer {TOKEN}
-Content-Type: application/json
-
-Request Body:
-{
-  "userId": "507f1f77bcf86cd799439011",
-  "mood": "Happy",
-  "stressLevel": 5,
-  "sleepHours": 8,
-  "notes": "Feeling great!"
-}
-
-Response: 201 Created
-{
-  "message": "Assessment saved",
-  "data": { assessment object }
-}
-```
-
-#### Get All Assessments
-```
-GET /assessment/all
-
-Response: 200 OK
-[ { assessment objects } ]
-```
-
-#### Get User Assessments
-```
-GET /assessment/user/:userId
-
-Response: 200 OK
-[ { user's assessment objects } ]
-```
+### Recommendation Endpoints
+- GET /api/recommendation - Get personalized recommendations
 
 ### Booking Endpoints
+- POST /api/booking/create - Create new booking
+- GET /api/booking/user/:userId - Get user bookings
+- PUT /api/booking/update/:id - Update booking
+- DELETE /api/booking/delete/:id - Delete booking
 
-#### Create Booking
-```
-POST /booking/create
-Authorization: Bearer {TOKEN}
-Content-Type: application/json
-
-Request Body:
-{
-  "userId": "507f1f77bcf86cd799439011",
-  "sessionType": "Meditation",
-  "date": "2026-04-25",
-  "notes": "Morning session preferred"
-}
-
-Response: 201 Created
-{
-  "message": "Booking confirmed successfully",
-  "booking": { booking object }
-}
-```
-
-#### Get User Bookings
-```
-GET /booking/all
-Authorization: Bearer {TOKEN}
-
-Response: 200 OK
-[ { bookings array } ]
-```
-
-#### Update Booking
-```
-PUT /booking/update/:id
-Authorization: Bearer {TOKEN}
-Content-Type: application/json
-
-Request Body:
-{
-  "status": "Confirmed",
-  "notes": "Updated notes"
-}
-
-Response: 200 OK
-{
-  "message": "Booking updated",
-  "updatedBooking": { booking object }
-}
-```
-
-#### 🆕 Reschedule Booking
-```
-PUT /booking/reschedule/:id
-Authorization: Bearer {TOKEN}
-Content-Type: application/json
-
-Request Body:
-{
-  "date": "2026-04-26T14:30:00Z",
-  "notes": "Rescheduled to afternoon session"
-}
-
-Response: 200 OK
-{
-  "message": "Booking rescheduled successfully",
-  "booking": { updated booking object }
-}
-```
-
-#### Delete Booking
-```
-DELETE /booking/delete/:id
-Authorization: Bearer {TOKEN}
-
-Response: 200 OK
-{
-  "message": "Booking deleted successfully"
-}
-```
-
-### Dashboard Endpoint
-
-#### Get Dashboard Data
-```
-GET /dashboard
-Authorization: Bearer {TOKEN}
-
-Response: 200 OK
-{
-  "latest": { latest assessment },
-  "averageStress": 6.2,
-  "trend": [ trend data array ],
-  "totalAssessments": 3
-}
-```
-
-### Report Endpoint
-
-#### Generate PDF Report
-```
-GET /report
-Authorization: Bearer {TOKEN}
-
-Response: 200 OK
-(Downloads PDF file with wellness report)
-```
-
-### 🆕 Recommendation Endpoint
-
-#### Get Personalized Recommendations
-```
-GET /recommendation
-Authorization: Bearer {TOKEN}
-
-Response: 200 OK
-{
-  "lastAssessment": {
-    "mood": "Happy",
-    "stressLevel": 5,
-    "sleepHours": 8,
-    "date": "2026-04-20T10:00:00Z"
-  },
-  "recommendations": [
-    {
-      "id": 1,
-      "title": "💪 Excellent Balance Achieved!",
-      "description": "Your sleep and stress levels are optimal. You're doing great!",
-      "icon": "🎯",
-      "category": "Positive Reinforcement",
-      "action": "Share Progress",
-      "priority": "low"
-    }
-  ]
-}
-```
-
-### 🆕 Admin Endpoints
-
-**Requires Admin Role - See [ADMIN_SETUP.md](wellness-backend/ADMIN_SETUP.md) for detailed instructions**
-
-#### Get All Users
-```
-GET /admin/users
-Authorization: Bearer {ADMIN_TOKEN}
-
-Response: 200 OK
-{
-  "total": 15,
-  "users": [ { user objects } ]
-}
-```
-
-#### Get All Bookings
-```
-GET /admin/bookings
-Authorization: Bearer {ADMIN_TOKEN}
-
-Response: 200 OK
-{
-  "total": 25,
-  "bookings": [ { booking objects with approval status } ]
-}
-```
-
-#### Approve Booking
-```
-PUT /admin/bookings/:bookingId/approve
-Authorization: Bearer {ADMIN_TOKEN}
-
-Response: 200 OK
-{
-  "message": "Booking approved successfully",
-  "booking": { updated booking object }
-}
-```
-
-#### Reject Booking
-```
-PUT /admin/bookings/:bookingId/reject
-Authorization: Bearer {ADMIN_TOKEN}
-Content-Type: application/json
-
-Request Body:
-{
-  "reason": "Trainer not available"
-}
-
-Response: 200 OK
-{
-  "message": "Booking rejected successfully",
-  "booking": { updated booking object }
-}
-```
-
-#### Get System Analytics
-```
-GET /admin/analytics
-Authorization: Bearer {ADMIN_TOKEN}
-
-Response: 200 OK
-{
-  "statistics": {
-    "users": { total, admins, regular },
-    "bookings": { total, pending, approved, rejected },
-    "assessments": { total, averageStress, moodDistribution }
-  },
-  "recentActivity": { recentUsers, recentBookings }
-}
-```
+### Feedback Endpoints
+- POST /api/feedback/add - Submit feedback
+- GET /api/feedback/user - Get user feedback
+- GET /api/feedback/stats - Get feedback statistics
 
 ---
 
 ## 🧪 Testing with Postman
 
-### Step 1: Import Postman Collection
+1. Import the Wellness-API-Postman.json collection
+2. Set up environment variables in Postman
+3. Test authentication first, then other endpoints
 
-1. Open **Postman**
-2. Click **File** → **Import**
-3. Select `wellness-backend/Wellness-API-Postman.json`
-
-### Step 2: Set Environment Variables
-
-In Postman collection, set variables:
-- `BASE_URL` = `http://localhost:5000`
-- `TOKEN` = (obtained after login)
-- `USER_ID` = (obtained after login)
-- `BOOKING_ID` = (obtained after creating booking)
-
-### Step 3: Test Workflow
-
-1. **Register User** → POST `/api/auth/register`
-2. **Login User** → POST `/api/auth/login` (save token & user ID)
-3. **Add Assessment** → POST `/api/assessment/add`
-4. **Get Recommendations** → GET `/api/recommendation` 🆕
-5. **Create Booking** → POST `/api/booking/create`
-6. **Reschedule Booking** → PUT `/api/booking/reschedule/{BOOKING_ID}` 🆕
-7. **Get Dashboard** → GET `/api/dashboard`
-8. **Generate Report** → GET `/api/report`
+See POSTMAN_SETUP.md for detailed instructions.
 
 ---
 
-## �‍💼 Admin Dashboard Setup
+## 🔧 Troubleshooting
 
-### Quick Start
+### Common Issues
 
-1. **Create Admin User** - Update any user's role to "Admin" in MongoDB:
-   ```json
-   db.users.updateOne(
-     { email: "your@email.com" },
-     { $set: { role: "Admin" } }
-   )
-   ```
+**MongoDB Connection Error:**
+- Ensure MongoDB is running
+- Check MONGODB_URI in .env
+- Verify network connectivity
 
-2. **Login as Admin** - Login with admin credentials to get admin token
+**Port Already in Use:**
+- Change PORT in .env
+- Kill process using the port
 
-3. **Access Admin Features** - Use admin token to access `/api/admin/*` endpoints
+**CORS Errors:**
+- Backend allows all origins by default
+- Check browser console for details
 
-### Admin Capabilities
-
-✅ View all users in the system  
-✅ View user details and history  
-✅ View all bookings  
-✅ Approve or reject pending bookings  
-✅ View system-wide analytics and statistics  
-✅ Promote users to admin role  
-
-### Full Admin Guide
-
-See **[ADMIN_SETUP.md](wellness-backend/ADMIN_SETUP.md)** for:
-- Detailed admin setup instructions
-- Complete admin API documentation
-- Admin workflow examples
-- Postman admin collections
+**JWT Token Issues:**
+- Ensure JWT_SECRET is set
+- Check token expiration (24 hours)
 
 ---
 
-## 📅 Calendar Integration Guide
+## 📄 License
 
-### Quick Start
-
-1. **Navigate to Booking Page** - Access the calendar from the sidebar
-2. **View Multiple Formats** - Switch between Month, Week, Day, and Agenda views
-3. **Create Bookings** - Click on any date to schedule a new session
-4. **Reschedule Sessions** - Click existing bookings to modify dates
-5. **Track Status** - Color-coded events show approval status
-
-### Calendar Features
-
-✅ **Google Calendar-style Interface** - Professional booking management  
-✅ **Multiple View Modes** - Month, Week, Day, and Agenda views  
-✅ **Color-coded Status** - Visual approval status indicators  
-✅ **Quick Booking Creation** - Click-to-create functionality  
-✅ **Rescheduling** - Easy date/time modifications  
-✅ **Responsive Design** - Works on all devices  
-
-### Full Calendar Guide
-
-See **[CALENDAR_SETUP.md](wellness-backend/CALENDAR_SETUP.md)** for:
-- Complete calendar integration documentation
-- API endpoints for booking management
-- Frontend component details
-- Troubleshooting guide
-
----
-
-## 🤖 Personalized Recommendations
-
-### How It Works
-
-The AI-powered recommendation system analyzes your latest wellness assessment and provides personalized suggestions:
-
-- **Stress Management** - Meditation and yoga recommendations for high stress
-- **Sleep Health** - Tips for better sleep when hours are low
-- **Mental Health** - Counseling suggestions for negative moods
-- **Fitness** - Exercise recommendations for overall wellness
-- **Positive Reinforcement** - Encouragement when metrics are optimal
-
-### Getting Recommendations
-
-1. **Complete Assessment** - Fill out mood, stress, and sleep data
-2. **View Dashboard** - Recommendations appear automatically
-3. **Take Action** - Click recommendation buttons to book sessions
-4. **Track Progress** - See how your wellness improves over time
-
-### Recommendation Categories
-
-🎯 **High Priority** - Immediate attention needed (red indicators)  
-⚠️ **Medium Priority** - Beneficial improvements (yellow indicators)  
-✅ **Low Priority** - Maintenance and positive reinforcement (green indicators)
-
----
-
-## �🔧 Troubleshooting
-
-### Issue: Port 3000/3001 Already in Use
-
-**Solution:**
-```bash
-# Find process using port 3000
-netstat -ano | findstr :3000
-
-# Kill the process (replace PID with process ID)
-taskkill /PID <PID> /F
-
-# Or change frontend port:
-PORT=3002 npm start
-```
-
-### Issue: MongoDB Connection Failed
-
-**Solution:**
-```bash
-# Start MongoDB service
-mongod
-
-# Or verify connection string in .env
-# Check MongoDB Atlas credentials if using cloud
-```
-
-### Issue: "Cannot find module" Error
-
-**Solution:**
-```bash
-# Reinstall dependencies
-npm install
-
-# Clear cache and reinstall
-npm cache clean --force
-rm -rf node_modules package-lock.json
-npm install
-```
-
-### Issue: Token Invalid/Expired
-
-**Solution:**
-1. Re-login to get fresh token
-2. Copy new token to Postman environment variables
-3. Use format: `Bearer <token>` in Authorization header
-
-### Issue: Frontend Shows Blank Page
-
-**Solution:**
-1. Check browser console (F12) for errors
-2. Verify backend is running on port 5000
-3. Check network tab to see API calls
-4. Clear browser cache and refresh
-
-### Issue: CORS Errors
-
-**Solution:**
-1. Ensure backend is running
-2. Check that frontend is on correct port
-3. Verify CORS middleware in server.js includes frontend URL
-
----
-
-## 📝 Environment Variables
-
-### Backend (.env)
-
-```env
-# Database Connection
-MONGODB_URI=mongodb://127.0.0.1:27017/wellness
-
-# Server Configuration
-PORT=5000
-
-# Security
-JWT_SECRET=your_secret_key_here
-```
-
----
-
-## 🔐 Security Notes
-
-⚠️ **Production Checklist:**
-
-- [ ] Change `JWT_SECRET` to a strong random string
-- [ ] Use MongoDB Atlas with strong credentials
-- [ ] Enable HTTPS
-- [ ] Set `NODE_ENV=production`
-- [ ] Configure CORS for your domain
-- [ ] Add rate limiting
-- [ ] Enable input validation
-- [ ] Use environment variables for all secrets
-- [ ] Set secure HTTP headers
-- [ ] Add logging and monitoring
-
----
-
-## 📚 Backend Dependencies
-
-| Package | Version | Purpose |
-|---------|---------|---------|
-| express | ^5.2.1 | Web framework |
-| mongoose | ^7.7.1 | MongoDB ODM |
-| bcrypt | ^6.0.0 | Password hashing |
-| jsonwebtoken | ^9.0.3 | JWT tokens |
-| cors | ^2.8.6 | CORS support |
-| dotenv | ^17.4.2 | Environment variables |
-| pdfkit | ^0.18.0 | PDF generation |
-| nodemon | ^3.1.14 | Development server |
-
-## 📚 Frontend Dependencies
-
-| Package | Version | Purpose |
-|---------|---------|---------|
-| react | ^19.2.5 | UI library |
-| react-dom | ^19.2.5 | DOM rendering |
-| react-router-dom | ^7.14.1 | Navigation |
-| axios | ^1.15.1 | HTTP client |
-| recharts | ^3.8.1 | Charts/graphs |
-| react-big-calendar | ^1.19.4 | 🆕 Calendar component |
-| date-fns | ^4.1.0 | 🆕 Date utilities |
-| react-scripts | 5.0.1 | Build tools |
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
 
 ## 🤝 Contributing
 
 1. Fork the repository
-2. Create feature branch: `git checkout -b feature/YourFeature`
-3. Commit changes: `git commit -m 'Add YourFeature'`
-4. Push to branch: `git push origin feature/YourFeature`
-5. Open Pull Request
-
----
-
-## 📄 License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
+2. Create a feature branch
+3. Commit your changes
+4. Push to the branch
+5. Open a Pull Request
 
 ---
 
 ## 📞 Support
 
-For issues and questions:
-1. Check the [Troubleshooting](#troubleshooting) section
-2. Review API documentation in `wellness-backend/POSTMAN_SETUP.md`
-3. Check backend logs for error messages
-4. Verify all services are running (MongoDB, Backend, Frontend)
-
----
-
-## 📚 Related Documentation
-
-- [Admin Setup](wellness-backend/ADMIN_SETUP.md) - Admin features and setup
-- [Calendar Setup](wellness-backend/CALENDAR_SETUP.md) - Calendar integration guide
-- [Postman Setup](wellness-backend/POSTMAN_SETUP.md) - API testing guide
-
----
-
-## 🎯 Quick Reference - Start Everything
-
-**3 Separate Terminals:**
-
-**Terminal 1: MongoDB**
-```bash
-mongod
-```
-
-**Terminal 2: Backend**
-```bash
-cd wellness-backend
-npm start
-```
-
-**Terminal 3: Frontend**
-```bash
-cd wellness-frontend
-npm start
-```
-
-Then open browser: **http://localhost:3001**
-
----
-
-## 📊 Database Collections
-
-MongoDB automatically creates these collections:
-
-- `users` - User accounts and profiles
-- `assessments` - Wellness assessment records
-- `bookings` - Session bookings and reservations
-
----
-
-## ✅ Feature Checklist
-
-### Core Features
-- ✅ User authentication with JWT
-- ✅ Wellness assessment tracking
-- ✅ Booking management system
-- ✅ Dashboard with analytics
-- ✅ PDF report generation
-- ✅ Responsive React frontend
-
-### 🆕 New Features
-- ✅ Calendar integration with multiple views
-- ✅ Booking rescheduling functionality
-- ✅ Personalized AI recommendations
-- ✅ Role-based access control
-- ✅ Admin dashboard and analytics
-- ✅ Booking approval system
-
----
-
-**Made with ❤️ for Wellness** ✨
+For support, email support@wellness-app.com or create an issue in the repository.

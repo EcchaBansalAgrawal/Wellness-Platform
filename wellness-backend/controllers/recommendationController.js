@@ -8,12 +8,10 @@ exports.getRecommendations = async (req, res) => {
       return res.status(400).json({ message: "User ID is required" });
     }
 
-    // Get latest assessment for user
-    const latestAssessment = await Assessment.findOne({ userId })
-      .sort({ createdAt: -1 })
-      .limit(1);
+    // Get all assessments for user to calculate trends
+    const assessments = await Assessment.find({ userId }).sort({ createdAt: -1 });
 
-    if (!latestAssessment) {
+    if (assessments.length === 0) {
       return res.status(200).json({
         recommendations: [
           {
@@ -28,8 +26,31 @@ exports.getRecommendations = async (req, res) => {
       });
     }
 
+    const latestAssessment = assessments[0];
+
+    // Calculate trends
+    const recent = assessments.slice(0, 7);
+    const previous = assessments.slice(7, 14);
+    let stressTrend = "stable";
+    let sleepTrend = "stable";
+
+    if (previous.length > 0) {
+      const recentAvgStress = recent.reduce((sum, a) => sum + a.stressLevel, 0) / recent.length;
+      const prevAvgStress = previous.reduce((sum, a) => sum + a.stressLevel, 0) / previous.length;
+
+      if (recentAvgStress > prevAvgStress + 0.5) stressTrend = "increasing";
+      else if (recentAvgStress < prevAvgStress - 0.5) stressTrend = "decreasing";
+
+      const recentAvgSleep = recent.reduce((sum, a) => sum + a.sleepHours, 0) / recent.length;
+      const prevAvgSleep = previous.reduce((sum, a) => sum + a.sleepHours, 0) / previous.length;
+
+      if (recentAvgSleep > prevAvgSleep + 0.5) sleepTrend = "improving";
+      else if (recentAvgSleep < prevAvgSleep - 0.5) sleepTrend = "declining";
+    }
+
     const recommendations = [];
 
+    // Based on latest assessment
     // 🔴 High Stress (7+)
     if (latestAssessment.stressLevel >= 7) {
       recommendations.push({
@@ -98,7 +119,7 @@ exports.getRecommendations = async (req, res) => {
     // 💪 Good Sleep (8+ hours) + Low Stress
     if (latestAssessment.sleepHours >= 8 && latestAssessment.stressLevel <= 3) {
       recommendations.push({
-        id: 6,
+        id: 10,
         title: "💪 Excellent Balance Achieved!",
         description: "Your sleep and stress levels are optimal. You're doing great!",
         icon: "🎯",
@@ -111,7 +132,7 @@ exports.getRecommendations = async (req, res) => {
     // General Fitness
     if (!recommendations.some((r) => r.category === "Mental Health")) {
       recommendations.push({
-        id: 7,
+        id: 11,
         title: "🏃 Stay Active",
         description: "Regular exercise improves both physical and mental health.",
         icon: "🏋️",

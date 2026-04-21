@@ -20,6 +20,7 @@ const dashboardRoutes = require("./routes/dashboardRoutes");
 const reportRoutes = require("./routes/reportRoutes");
 const adminRoutes = require("./routes/adminRoutes");
 const recommendationRoutes = require("./routes/recommendationRoutes");
+const feedbackRoutes = require("./routes/feedbackRoutes");
 
 // ✅ USE ROUTES (VERY IMPORTANT)
 app.use("/api/auth", authRoutes);
@@ -28,6 +29,7 @@ app.use("/api/booking", bookingRoutes);
 app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/report", reportRoutes);
 app.use("/api/admin", adminRoutes);
+app.use("/api/feedback", feedbackRoutes);
 app.use("/api/recommendation", recommendationRoutes);
 
 // ✅ test route

@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import CalendarComponent from "../components/CalendarComponent";
 import RescheduleModal from "../components/RescheduleModal";
 import API from "../services/api";
 import "./BookingPage.css";
 
 function Booking() {
+  const location = useLocation();
   const [bookings, setBookings] = useState([]);
   const [selectedBooking, setSelectedBooking] = useState(null);
   const [showRescheduleModal, setShowRescheduleModal] = useState(false);
@@ -12,6 +14,7 @@ function Booking() {
   const [message, setMessage] = useState("");
   const [showNewBookingForm, setShowNewBookingForm] = useState(false);
   const [formData, setFormData] = useState({
+    sessionType: location.state?.sessionType || "Meditation",
     sessionType: "Meditation",
     date: "",
     notes: "",
